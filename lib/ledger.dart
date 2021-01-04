@@ -8,7 +8,7 @@ class Ledger extends StatefulWidget {
 }
 
 class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
-  TabController _LedgerTabController;a
+  TabController _LedgerTabController;
 
   @override
   void initState() {
