@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myledger/datalist.dart';
 import 'package:myledger/staticfunction.dart';
 
@@ -129,6 +130,10 @@ class _DialogViewState extends State<DialogView> {
                 margin: EdgeInsets.fromLTRB(20, 5, 10, 5),
                 child: TextField(
                   controller: _amountcontroller,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black, width:2.0),),
                     border: UnderlineInputBorder(),
@@ -157,8 +162,9 @@ class _DialogViewState extends State<DialogView> {
                         print('please input flag');
                       else
                         widget.arguments.clr = flag_in ? 'green' : 'red';
-                      if(widget.arguments.amount != '')
+                      if(widget.arguments.amount != '') {
                         Navigator.pop(context, widget.arguments);
+                      }
                       else
                         print('please input amount');
                       },

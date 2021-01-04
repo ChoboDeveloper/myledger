@@ -13,7 +13,7 @@ class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _LedgerTabController = new TabController(length: 3, vsync: this);
+    _LedgerTabController = new TabController(length: 2, vsync: this);
   }
 
   @override
@@ -43,9 +43,6 @@ class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
                 text: '일일',
               ),
               Tab(
-                text: "주별",
-              ),
-              Tab(
                 text: "월별",
               ),
             ],
@@ -60,12 +57,6 @@ class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
             children: <Widget>[
               Container(
                 child: Daily_view(),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.redAccent,
-                ),
               ),
               Container(
                 decoration: BoxDecoration(

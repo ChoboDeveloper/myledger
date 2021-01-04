@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white10,
+      statusBarColor: Colors.grey,
     ));
     return FutureBuilder<dynamic>(
         future: staticfunction.getFilepath(),
