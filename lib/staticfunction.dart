@@ -30,6 +30,4 @@ class staticfunction{
     String formatted = DateFormat('yyyy-MM').format(date);
     return formatted;
   }
-
-
 }

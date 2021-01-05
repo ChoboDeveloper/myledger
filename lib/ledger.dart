@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myledger/daily_view.dart';
+import 'package:myledger/month_view.dart';
 
 class Ledger extends StatefulWidget {
 
@@ -59,10 +60,7 @@ class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
                 child: Daily_view(),
               ),
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.tealAccent,
-                ),
+                child: Month_view(),
               ),
             ],
           ),

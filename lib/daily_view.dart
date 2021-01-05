@@ -45,7 +45,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Text('수입', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(_dl.total_in), style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(staticfunction.getcurrencyformatInt(_dl.total_in)+'원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -53,7 +53,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Text('지출', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(_dl.total_out),style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(staticfunction.getcurrencyformatInt(_dl.total_out)+'원',style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -61,7 +61,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Text('합계', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(_dl.total), style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(staticfunction.getcurrencyformatInt(_dl.total)+'원', style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
