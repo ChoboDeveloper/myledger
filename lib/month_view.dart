@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:myledger/staticfunction.dart';
+import 'package:myledger/month_datalist.dart';
 
 class Month_view extends StatefulWidget {
   @override
@@ -7,16 +9,19 @@ class Month_view extends StatefulWidget {
 }
 
 class _MonthViewState extends State<Month_view> {
-  File file;
+  MonthDataList ml;
+  int year;
 
   @override
   void initState() {
     super.initState();
+    year = DateTime.now().year;
+    ml = new MonthDataList();
+    ml.init_monthDataList(year);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<int> month = [01,02,03,04,05,06,07,08,09,10,11,12];
     return Column(
       children: <Widget>[
         Row(
@@ -27,7 +32,7 @@ class _MonthViewState extends State<Month_view> {
               child: Column(
                 children: [
                   Text('수입', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text('500원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(staticfunction.getcurrencyformatInt(ml.get_income_year())+'원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -35,7 +40,7 @@ class _MonthViewState extends State<Month_view> {
               child: Column(
                 children: [
                   Text('지출', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text('400원', style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(staticfunction.getcurrencyformatInt(ml.get_outcome_year())+'원', style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -43,7 +48,7 @@ class _MonthViewState extends State<Month_view> {
               child: Column(
                 children: [
                   Text('합계', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text('100원', style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(staticfunction.getcurrencyformatInt((ml.get_income_year()-ml.get_outcome_year()))+'원', style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -55,13 +60,19 @@ class _MonthViewState extends State<Month_view> {
             children: <Widget>[
               FlatButton(
                 child: Icon(Icons.chevron_left),
-                onPressed: (){print('left');
+                onPressed: (){
+                  print('left');
+                  ml.init_monthDataList(--year);
+                  setState(() {});
                 },
               ),
-              Text('2021년', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold,)),
+              Text(year.toString()+'년', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold,)),
               FlatButton(
                 child: Icon(Icons.chevron_right),
-                onPressed: (){print('right');
+                onPressed: (){
+                  print('right');
+                  ml.init_monthDataList(++year);
+                  setState(() {});
                 },
               ),
             ],
@@ -71,25 +82,34 @@ class _MonthViewState extends State<Month_view> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              for ( var i in month)
+              for (int i = 0; i < 12; i++)
                 Container(
                   margin: EdgeInsets.all(2.0),
                   padding: EdgeInsets.all(5.0),
                   decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.grey[300]),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[300], width:1.0)
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(' '+ i.toString()+'월', style: TextStyle(
-                        fontSize: 17.0, fontWeight: FontWeight.bold,)),
-                      Text((i*1000).toString()+'원', style: TextStyle(fontSize: 17.0,
+                      Container(
+                        width: 100,
+                        margin: EdgeInsets.only(left: 15),
+                        child:  Text((i+1).toString()+'월', style: TextStyle(
+                        fontSize: 17.0, fontWeight: FontWeight.bold)),),
+                      Container(
+                        width: 120,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_income())+'원', style: TextStyle(fontSize: 17.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green[400])),
-                      Text((i*500).toString()+'원', style: TextStyle(fontSize: 17.0,
+                          color: Colors.green[400])),),
+                      Container(
+                        width: 100,
+                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_outcome())+'원', style: TextStyle(fontSize: 17.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.red[300])),
+                          color: Colors.red[300])),),
                     ],
                   ),
                 )
@@ -99,5 +119,5 @@ class _MonthViewState extends State<Month_view> {
       ],
     );
   }
-
 }
+

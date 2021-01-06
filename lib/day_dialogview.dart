@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myledger/datalist.dart';
+import 'package:myledger/day_datalist.dart';
 import 'package:myledger/staticfunction.dart';
 
 class DialogView extends StatefulWidget {

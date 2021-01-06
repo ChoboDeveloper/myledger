@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myledger/daily_view.dart';
+import 'package:myledger/day_view.dart';
 import 'package:myledger/month_view.dart';
 
 class Ledger extends StatefulWidget {

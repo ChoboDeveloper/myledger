@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:myledger/datalist.dart';
+import 'package:myledger/day_datalist.dart';
 import 'package:myledger/staticfunction.dart';
-import 'package:myledger/popup_view.dart';
+import 'package:myledger/day_dialogview.dart';
 
 class Daily_view extends StatefulWidget {
   @override
