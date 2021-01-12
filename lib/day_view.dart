@@ -237,7 +237,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(staticfunction.getdateformat(_dl.datalist[index].date),
+                  Text(staticfunction.getdateformat_withtime(_dl.datalist[index].date),
                       style: TextStyle(fontSize: 13.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey)),
@@ -277,7 +277,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(staticfunction.getdateformat(_dl.datalist[index].date),
+                Text(staticfunction.getdateformat_withtime(_dl.datalist[index].date),
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
@@ -317,7 +317,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(staticfunction.getdateformat(_dl.datalist[index].date),
+                Text(staticfunction.getdateformat_withtime(_dl.datalist[index].date),
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),

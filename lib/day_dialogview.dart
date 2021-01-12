@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myledger/day_datalist.dart';
@@ -13,6 +14,8 @@ class DialogView extends StatefulWidget {
 
 class _DialogViewState extends State<DialogView> {
   bool flag_in = false, flag_out = false;
+  DateTime _getMonth;
+  TimeOfDay _getTime;
   final _datecontroller = TextEditingController();
   final _tagcontroller = TextEditingController();
   final _subjectcontroller = TextEditingController();
@@ -77,12 +80,57 @@ class _DialogViewState extends State<DialogView> {
               Container(
                 width: 300,
                 margin: EdgeInsets.fromLTRB(20, 5, 10, 5),
-                child: TextField(
-                  controller: _datecontroller,
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black, width:2.0),),
-                    border: UnderlineInputBorder(),
-                  ),
+                child: Row(
+                  children: [
+                    OutlineButton(onPressed: () async{
+                      Future<DateTime> selectedDate = showDatePicker(
+                          context: context,
+                          initialDate: DateTime.parse(_datecontroller.text),
+                          firstDate: DateTime(2018),
+                          lastDate: DateTime(2030),
+                          builder: (BuildContext context, Widget child) {
+                            return Theme( data: ThemeData.dark(), child: child,);
+                          }
+                      );
+                      _getMonth = await selectedDate;
+                      if(_getMonth != null)
+                        _datecontroller.text = staticfunction.getdateformat(_getMonth).split(' ')[0] +
+                            ' ' + _datecontroller.text.split(' ')[1];
+                      setState(() {});
+                    }, child: Text(
+                      _datecontroller.text.split(' ')[0],
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                      borderSide: BorderSide(style: BorderStyle.solid, width: 0.8),
+                    ),
+                    Container(
+                      width: 10,
+                    ),
+                    OutlineButton(onPressed: () async{
+                      Future<TimeOfDay> selectedTime = showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(DateTime.parse(_datecontroller.text)),
+                        builder: (BuildContext context, Widget child) {
+                          return Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: child,
+                          );
+                        },
+                      );
+                      _getTime = await selectedTime;
+                      if(_getTime != null){
+                        _datecontroller.text = _datecontroller.text.split(' ')[0] +
+                            ' ' + _getTime.hour.toString().padLeft(2, '0') + ':' + _getTime.minute.toString().padLeft(2, '0') + ':00';
+                        setState(() {});
+                      }
+                      },
+                      child: Text(
+                        staticfunction.getTimeformat(DateTime.parse(_datecontroller.text)),
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                      borderSide: BorderSide(style: BorderStyle.solid, width: 0.8),
+                    )
+                  ],
                 ),
               ),
             ],
