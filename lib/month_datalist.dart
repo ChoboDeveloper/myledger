@@ -72,8 +72,8 @@ class MonthDataList{
       String amount, clr;
 
       inputStream = fileContent.split('\n')[i];
-      amount = inputStream.split('/')[1];
-      clr = inputStream.split('/')[4];
+      amount = inputStream.split('#')[1];
+      clr = inputStream.split('#')[4];
 
       if(clr == 'green') {
         monthdatalist[index].add_value(int.parse(amount));

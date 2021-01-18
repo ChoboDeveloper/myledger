@@ -43,10 +43,10 @@ class DataList{
     String inputStream = '';
     datalist.forEach((element) {
       String _date,_amount,_tag,_subject,_flag;
-      _date = staticfunction.getdateformat(element.date) + '/';
-      _amount = element.amount + '/';
-      _tag = element.tag + '/';
-      _subject = element.subject + '/';
+      _date = staticfunction.getdateformat(element.date) + '#';
+      _amount = element.amount + '#';
+      _tag = element.tag + '#';
+      _subject = element.subject + '#';
       _flag = element.clr + '\n';
       inputStream += _date+_amount+_tag+_subject+_flag;
     });
@@ -59,10 +59,10 @@ class DataList{
     String inputStream = '';
 
     String _date,_amount,_tag,_subject,_flag;
-    _date = staticfunction.getdateformat(element.date) + '/';
-    _amount = element.amount + '/';
-    _tag = element.tag + '/';
-    _subject = element.subject + '/';
+    _date = staticfunction.getdateformat(element.date) + '#';
+    _amount = element.amount + '#';
+    _tag = element.tag + '#';
+    _subject = element.subject + '#';
     _flag = element.clr + '\n';
     inputStream += _date+_amount+_tag+_subject+_flag;
 
@@ -90,11 +90,11 @@ class DataList{
       String date, tag, amount, subject, clr;
 
       inputStream = fileContent.split('\n')[i];
-      date = inputStream.split('/')[0];
-      amount = inputStream.split('/')[1];
-      tag = inputStream.split('/')[2];
-      subject = inputStream.split('/')[3];
-      clr = inputStream.split('/')[4];
+      date = inputStream.split('#')[0];
+      amount = inputStream.split('#')[1];
+      tag = inputStream.split('#')[2];
+      subject = inputStream.split('#')[3];
+      clr = inputStream.split('#')[4];
 
       addList(DateTime.parse(date), amount, tag, subject, clr);
     }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myledger/day_datalist.dart';
 import 'package:myledger/staticfunction.dart';
+import 'package:myledger/day_tagview.dart';
 
 class DialogView extends StatefulWidget {
   DialogView({this.arguments});
@@ -16,6 +17,7 @@ class _DialogViewState extends State<DialogView> {
   bool flag_in = false, flag_out = false;
   DateTime _getMonth;
   TimeOfDay _getTime;
+  String _getTag;
   final _datecontroller = TextEditingController();
   final _tagcontroller = TextEditingController();
   final _subjectcontroller = TextEditingController();
@@ -31,6 +33,9 @@ class _DialogViewState extends State<DialogView> {
       _tagcontroller.text = widget.arguments.tag;
       flag_in = widget.arguments.clr == 'green' ? true : false;
       flag_out = widget.arguments.clr == 'green' ? false : true;
+    }
+    else{
+      _tagcontroller.text = '미분류';
     }
   }
 
@@ -62,6 +67,7 @@ class _DialogViewState extends State<DialogView> {
               fillColor: flag_in ? Colors.green[400] : Colors.red[400],
               selectedColor: Colors.white,
               onPressed: (int index){
+                _tagcontroller.text = '미분류';
                 if (index == 0) {
                   flag_in = true; flag_out = false;
                 } else {
@@ -101,7 +107,7 @@ class _DialogViewState extends State<DialogView> {
                       _datecontroller.text.split(' ')[0],
                       style: TextStyle(color: Colors.black87),
                     ),
-                      borderSide: BorderSide(style: BorderStyle.solid, width: 0.8),
+                      borderSide: BorderSide(style: BorderStyle.solid, width: 1.2),
                     ),
                     Container(
                       width: 10,
@@ -128,7 +134,7 @@ class _DialogViewState extends State<DialogView> {
                         staticfunction.getTimeformat(DateTime.parse(_datecontroller.text)),
                       style: TextStyle(color: Colors.black87),
                     ),
-                      borderSide: BorderSide(style: BorderStyle.solid, width: 0.8),
+                      borderSide: BorderSide(style: BorderStyle.solid, width: 1.2),
                     )
                   ],
                 ),
@@ -142,12 +148,32 @@ class _DialogViewState extends State<DialogView> {
               Container(
                 width: 300,
                 margin: EdgeInsets.fromLTRB(20, 5, 10, 5),
-                child: TextField(
-                  controller: _tagcontroller,
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black, width:2.0),),
-                    border: UnderlineInputBorder(),
-                  ),
+                child: Row(
+                  children: [
+                    OutlineButton(onPressed: () async{
+                      _getTag = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('분류를 선택하세요'),
+                              content: TagView(arguments: _getTag, arguments_flag: flag_in),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('취소하기'),
+                                  onPressed: () {Navigator.pop(context, '미분류');},
+                                ),
+                              ],
+                            );
+                          });
+                      if(_getTag != null) {
+                        _tagcontroller.text = _getTag;
+                        setState(() {});
+                      }
+                    },
+                      child: Text(_tagcontroller.text),
+                      borderSide: BorderSide(style: BorderStyle.solid, width: 1.2),
+                    ),
+                  ],
                 ),
               ),
             ],
