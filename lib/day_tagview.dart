@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:myledger/staticfunction.dart';
-import 'dart:io';
+import 'package:myledger/day_taglist.dart';
 
 class TagView extends StatefulWidget {
   TagView({this.arguments, this.arguments_flag});
@@ -14,99 +13,67 @@ class TagView extends StatefulWidget {
 }
 
 class _TagViewState extends State<TagView>{
-  List<String> taglist;
-  String filename;
+  TagList _tl;
+  final _tagcontroller = TextEditingController();
 
   @override
   void initState() {
-    taglist = [];
+    _tl = new TagList();
     if(widget.arguments_flag){
-      filename = 'input'; readList(filename);}
+      _tl.filename = 'input'; _tl.readList(_tl.filename);}
     else{
-      filename = 'output'; readList(filename);}
-  }
-
-  readList(String fn){
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
-    taglist.clear();
-
-    if(!file.existsSync() ) {
-      if(widget.arguments_flag == false) {
-        taglist.add('식비');
-        taglist.add('교통/차량');
-        taglist.add('문화생활');
-        taglist.add('마트/편의점');
-        taglist.add('교육');
-        taglist.add('생활용품');
-        taglist.add('주거/통신');
-        taglist.add('경조사/회비');
-        taglist.add('기타');
-        saveList(fn);
-        readList(fn);
-      }
-      else{
-        taglist.add('월급');
-        taglist.add('부수입');
-        taglist.add('용돈');
-        taglist.add('상여');
-        taglist.add('금융소득');
-        taglist.add('기타');
-        saveList(fn);
-        readList(fn);
-      }
-      return;
-    }
-
-    String fileContent = file.readAsStringSync();
-    for(int i=0; i<fileContent.split('\n').length-1;i++) {
-      String inputStream;
-      inputStream = fileContent.split('\n')[i];
-      taglist.add(inputStream);
-    }
-  }
-
-  saveList(String fn){
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
-    String inputStream = '';
-    taglist.forEach((element) {
-      inputStream += element + '\n';
-    });
-    file.writeAsString(inputStream);
+      _tl.filename = 'output'; _tl.readList(_tl.filename);}
   }
 
   Widget build(BuildContext context) {
     return Container(
       height: 500.0,
       width: 300.0,
-      child: ListView.builder(
-        itemCount: taglist.length,
+      child: ListView.separated(
+        itemCount: _tl.taglist.length,
         itemBuilder: (BuildContext context, int index){
           return ListTile(
-            title: Text(taglist[index]),
+            title: Text(_tl.taglist[index]),
             onTap: (){
-              widget.arguments = taglist[index];
+              widget.arguments = _tl.taglist[index];
               Navigator.pop(context, widget.arguments);},
             onLongPress: (){
-              showCupertinoModalPopup(
-                context: context,
-                builder: (BuildContext context) => CupertinoActionSheet(
-                  actions: <Widget>[
-                    CupertinoActionSheetAction(
-                      child: const Text('삭제하기', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
-                      onPressed: () {
-                      },
+              _tagcontroller.text = _tl.taglist[index];
+              showCupertinoDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text('분류변경'),
+                    content: TextField(
+                      controller: _tagcontroller,
+                      decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black, width:2.0),),
+                        border: UnderlineInputBorder(),
+                      ),
                     ),
-                    CupertinoActionSheetAction(
-                      child: const Text('취소하기', style: TextStyle(color: Colors.grey),),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ),
-              );
+                    actions: [
+                      FlatButton(
+                        child: Text('수정하기'),
+                        onPressed: () {
+                          _tl.taglist[index] = _tagcontroller.text;
+                          setState(() {});
+                          Navigator.pop(context, '미분류');
+                          },
+                      ),
+                      FlatButton(
+                        child: Text('취소하기'),
+                        onPressed: () {Navigator.pop(context, '미분류');},
+                      ),
+                      FlatButton(
+                        child: Text('삭제하기', style: TextStyle(color: Colors.red),),
+                        onPressed: () {Navigator.pop(context, '미분류');},
+                      ),
+                    ],
+                  ));
             },
           );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider(color: Colors.black54);
         },
       ),
     );
