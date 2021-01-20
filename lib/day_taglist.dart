@@ -21,7 +21,6 @@ class TagList{
       taglist.add('주거/통신');
       taglist.add('경조사/회비');
       taglist.add('기타');
-      saveList(filename);
     }
     else{
       taglist.add('월급');
@@ -30,19 +29,19 @@ class TagList{
       taglist.add('상여');
       taglist.add('금융소득');
       taglist.add('기타');
-      saveList(filename);
     }
   }
 
   readList(String fn){
     File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
-    taglist.clear();
 
     if(!file.existsSync()) {
+      taglist.clear();
       if(fn == 'output')
         initlist(false);
       else
         initlist(true);
+      saveList(fn);
       readList(fn);
       return;
     }

@@ -33,7 +33,7 @@ class staticfunction{
 
   static String getTimeformat(DateTime date){
     String formatted = DateFormat('hh:mm:ss').format(date);
-    if(date.hour > 12)
+    if(date.hour >= 12)
       formatted = '오후 ' + formatted;
     else
       formatted = '오전 ' + formatted;
@@ -43,7 +43,7 @@ class staticfunction{
   static String getdateformat_withtime(DateTime date){
     String tmp;
     String formatted;
-    if(date.hour > 12)
+    if(date.hour >= 12)
       tmp = '   오후';
     else
       tmp = '   오전';

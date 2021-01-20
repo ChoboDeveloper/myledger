@@ -27,6 +27,7 @@ class _DialogViewState extends State<DialogView> {
   void initState() {
     super.initState();
     _datecontroller.text = staticfunction.getdateformat(widget.arguments.date);
+    //existed option
     if(widget.arguments.clr != '') {
       _amountcontroller.text = widget.arguments.amount;
       _subjectcontroller.text = widget.arguments.subject;
@@ -34,7 +35,9 @@ class _DialogViewState extends State<DialogView> {
       flag_in = widget.arguments.clr == 'green' ? true : false;
       flag_out = widget.arguments.clr == 'green' ? false : true;
     }
+    //default option
     else{
+      flag_in = false; flag_out = true;
       _tagcontroller.text = '미분류';
     }
   }
@@ -46,6 +49,7 @@ class _DialogViewState extends State<DialogView> {
       body: Column(
         children: <Widget>[
           SizedBox(height: 30),
+          // togglebutton to choice input or output
           Container(
             child: ToggleButtons(
               children: <Widget>[
@@ -79,6 +83,7 @@ class _DialogViewState extends State<DialogView> {
               isSelected: [flag_in, flag_out],
             ),
           ),
+          // buttons to choice Date
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -141,6 +146,7 @@ class _DialogViewState extends State<DialogView> {
               ),
             ],
           ),// button
+          // to choice cartegory
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -154,16 +160,7 @@ class _DialogViewState extends State<DialogView> {
                       _getTag = await showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('분류를 선택하세요'),
-                              content: TagView(arguments: _getTag, arguments_flag: flag_in),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('취소하기'),
-                                  onPressed: () {Navigator.pop(context, '미분류');},
-                                ),
-                              ],
-                            );
+                            return TagView(arguments: _getTag, arguments_flag: flag_in);
                           });
                       if(_getTag != null) {
                         _tagcontroller.text = _getTag;
@@ -178,6 +175,7 @@ class _DialogViewState extends State<DialogView> {
               ),
             ],
           ),
+          // underlineinput for line detail of data
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -195,6 +193,7 @@ class _DialogViewState extends State<DialogView> {
               ),
             ],
           ),
+          // underlineinput for amount of revenue
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -216,6 +215,7 @@ class _DialogViewState extends State<DialogView> {
               ),
             ],
           ),
+          // save and cancel button
           Container(
             child: Row(
               children: <Widget>[

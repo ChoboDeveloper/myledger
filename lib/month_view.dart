@@ -28,7 +28,6 @@ class _MonthViewState extends State<Month_view> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 37,
               child: Column(
                 children: [
                   Text('수입', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
@@ -95,19 +94,19 @@ class _MonthViewState extends State<Month_view> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: 100,
+                        width: 50,
                         margin: EdgeInsets.only(left: 15),
                         child:  Text((i+1).toString()+'월', style: TextStyle(
                         fontSize: 17.0, fontWeight: FontWeight.bold)),),
                       Container(
-                        width: 120,
+                        width: 140,
                         padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_income())+'원', style: TextStyle(fontSize: 17.0,
+                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_income())+'원', style: TextStyle(fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.green[400])),),
                       Container(
-                        width: 100,
-                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_outcome())+'원', style: TextStyle(fontSize: 17.0,
+                        width: 140,
+                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_outcome())+'원', style: TextStyle(fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.red[300])),),
                     ],

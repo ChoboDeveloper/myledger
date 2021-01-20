@@ -41,7 +41,6 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 37,
               child: Column(
                 children: [
                   Text('수입', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
@@ -115,7 +114,6 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                 }
                 else _dl.saveOtherList(staticfunction.getfilename(_getdata.date), _getdata);
               }
-              print(_getdata.amount);
               refresh(_dl);
               _savefile();
             },
@@ -184,6 +182,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
 
   List<Widget> _create_ListView_Total() {
     refresh(_dl);
+    _savefile();
     return new List<Widget>.generate(_dl.datalist.length, (int index){
       String sign = _dl.datalist[index].clr == 'green' ? '+ ' : '- ';
       String money = staticfunction.getcurrencyformat(_dl.datalist[index].amount);
@@ -241,7 +240,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                       style: TextStyle(fontSize: 13.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey)),
-                  Text(_dl.datalist[index].subject, style: TextStyle(
+                  Text(_dl.datalist[index].subject == '' ? _dl.datalist[index].tag : _dl.datalist[index].subject, style: TextStyle(
                       fontSize: 20.0, fontWeight: FontWeight.bold)),
                 ],
               ),
@@ -281,7 +280,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
-                Text(_dl.datalist[index].subject, style: TextStyle(
+                Text(_dl.datalist[index].subject == '' ? _dl.datalist[index].tag : _dl.datalist[index].subject, style: TextStyle(
                     fontSize: 20.0, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -321,7 +320,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
-                Text(_dl.datalist[index].subject, style: TextStyle(
+                Text(_dl.datalist[index].subject == '' ? _dl.datalist[index].tag : _dl.datalist[index].subject, style: TextStyle(
                     fontSize: 20.0, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -336,9 +335,8 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
   }
 
   void _savefile() {
-    setState(() {
-      _dl.saveList('$_current_year-$_current_month');
-    });
+    _dl.saveList('$_current_year-$_current_month');
+    setState(() {});
   }
 
   void _getCurrentdate(String direction){
