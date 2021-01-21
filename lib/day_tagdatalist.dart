@@ -34,6 +34,7 @@ class TagList{
 
   readList(String fn){
     File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
+    taglist.clear();
 
     if(!file.existsSync()) {
       taglist.clear();

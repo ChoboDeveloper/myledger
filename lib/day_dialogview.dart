@@ -159,6 +159,7 @@ class _DialogViewState extends State<DialogView> {
                     OutlineButton(onPressed: () async{
                       _getTag = await showDialog(
                           context: context,
+                          barrierDismissible: false,
                           builder: (BuildContext context) {
                             return TagView(arguments: _getTag, arguments_flag: flag_in);
                           });

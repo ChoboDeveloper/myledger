@@ -12,6 +12,7 @@ class MonthDataStructure{
   String get_income(){
     return income.toString();
   }
+
   String get_outcome(){
     return outcome.toString();
   }
