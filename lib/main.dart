@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:myledger/ledger.dart';
 import 'package:myledger/statistics.dart';
 import 'package:myledger/staticfunction.dart';
@@ -16,6 +17,10 @@ class MyApp extends StatelessWidget{
           child: MyHomePage(),
         ),
       ),
+      localizationsDelegates: [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
     );
   }
 }

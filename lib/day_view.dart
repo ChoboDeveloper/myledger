@@ -98,20 +98,29 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
           width: screenWidth * 0.8,
           margin: EdgeInsets.all(0),
           padding: EdgeInsets.all(0),
-          decoration: BoxDecoration(border: Border.all(width:2)), //             <--- BoxDecoration here
+          decoration: BoxDecoration(border: Border.all(width:2)),
           child:FlatButton(
             child: Text(' + 새로운 거래내역을 추가하기', style:  TextStyle(fontSize: 20.0)),
             onPressed: () async{
               DataStructure _getdata = new DataStructure();
+              // 다른 월의 페이지에서 입력받는 경우
+              if(_getdata.date.month.toString().padLeft(2, '0') != _current_month || _getdata.date.year.toString() != _current_year){
+                print(_current_year + _current_month);
+                _getdata.date = DateTime.parse(_current_year+'-'+_current_month+'-01 00:00:00.000');
+              }
+              // default : 현재 동일한 월인 경우
               _getdata = await Navigator.push(context,
                   CupertinoPageRoute(builder: (context) => DialogView(arguments: _getdata))
               );
+              // 입력받은 데이터가 존재하는 경우
               if(_getdata.amount != '') {
-                if(_getdata.date.month.toString().padLeft(2, '0') == _current_month) {
+                // 동월인 경우 같은 경우 현재 데이터 파일에 저장
+                if(_getdata.date.month.toString().padLeft(2, '0') == _current_month && _getdata.date.year.toString() == _current_year) {
                   _dl.addList(_getdata.date, _getdata.amount, _getdata.tag,
                       _getdata.subject, _getdata.clr);
                   _savefile();
                 }
+                // 다른 경우 다른 데이터 파일에 저장
                 else _dl.saveOtherList(staticfunction.getfilename(_getdata.date), _getdata);
               }
               refresh(_dl);

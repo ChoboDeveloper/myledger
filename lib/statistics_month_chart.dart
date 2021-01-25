@@ -23,11 +23,13 @@ class _MonthState extends State<Month_chart> {
     ml = new MonthDataList();
     tl = new TagList();
 
+    // default : draw Annual outcome chart
     tl.readList('output');
-    ml.init_monthDataList(year);
+    ml.create_monthDataList(year);
     seriesList = _createData(year, flag);
   }
 
+  // Draw BarChart
   barChart() {
     return charts.BarChart(
       seriesList,
@@ -35,6 +37,7 @@ class _MonthState extends State<Month_chart> {
     );
   }
 
+  // Create Month Chart DataList
   List<charts.Series<Stat, String>> _createData(int year, bool flag) {
     List<Stat> Month_Data = [];
 
@@ -62,33 +65,46 @@ class _MonthState extends State<Month_chart> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      padding: EdgeInsets.zero,
       children: [
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // Button to last year
               FlatButton(
                 child: Icon(Icons.chevron_left),
                 onPressed: (){
                   print('left');
-                  ml.init_monthDataList(--year);
+                  // if didn`t select Tag,
+                  if(dropdownValue == null)
+                    ml.create_monthDataList(--year);
+                  // if Selected Tag, read Data by Tag
+                  else
+                    ml.create_monthDataList_byTag(--year, dropdownValue);
+                  // Create Month Chart DataList
                   seriesList = _createData(year, flag);
                   setState(() {});
                 },
               ),
               Text(year.toString()+'년', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold,)),
+              // Button to next year
               FlatButton(
                 child: Icon(Icons.chevron_right),
                 onPressed: (){
                   print('right');
-                  ml.init_monthDataList(++year);
+                  if(dropdownValue == null)
+                    ml.create_monthDataList(++year);
+                  else
+                    ml.create_monthDataList_byTag(++year, dropdownValue);
                   seriesList = _createData(year, flag);
                   setState(() {});
                 },
               ),
+              // Create Tag Menu
               Container(
-                margin: EdgeInsets.fromLTRB(15.0,0,0,0),
+                margin: EdgeInsets.only(left: 16.0),
                 child: DropdownButton(
                   value: dropdownValue,
                   icon: Icon(Icons.arrow_downward),
@@ -101,7 +117,12 @@ class _MonthState extends State<Month_chart> {
                   ),
                   onChanged: (String newValue) {
                     setState(() {
+                      // set Tag
                       dropdownValue = newValue;
+                      print(dropdownValue);
+                      ml.create_monthDataList_byTag(year, dropdownValue);
+                      seriesList = _createData(year, flag);
+                      setState(() {});
                     });
                   },
                   items: tl.taglist
@@ -126,9 +147,11 @@ class _MonthState extends State<Month_chart> {
             child: Text('수입/지출 변경하기'),
             onPressed: (){
               if(flag) flag = false; else flag =true;
-              seriesList = _createData(year, flag);
+              ml.create_monthDataList(year);
               dropdownValue = null;
+              tl.taglist.clear();
               flag ? tl.readList('input') : tl.readList('output');
+              seriesList = _createData(year, flag);
               setState(() {});
             },
             shape: RoundedRectangleBorder(side: BorderSide(

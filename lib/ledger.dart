@@ -26,8 +26,7 @@ class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ListView(
       children: <Widget>[
         Material(
           color: Colors.white10,
@@ -51,7 +50,7 @@ class _LedgerState extends State<Ledger> with TickerProviderStateMixin {
         ),
         Container(
           height: screenHeight * 0.80,
-          margin: EdgeInsets.only(left: 16.0, right: 16.0),
+          margin: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             controller: _LedgerTabController,

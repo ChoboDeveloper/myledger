@@ -4,9 +4,9 @@ import 'package:myledger/staticfunction.dart';
 class MonthDataStructure{
   int income, outcome;
 
-  MonthDataStructure(int b, int c){
-    this.income = b;
-    this.outcome = c;
+  MonthDataStructure(int i, int o){
+    this.income = i;
+    this.outcome = o;
   }
 
   String get_income(){
@@ -27,9 +27,9 @@ class MonthDataStructure{
 }
 
 class MonthDataList{
-  List<MonthDataStructure> monthdatalist;
+  List<MonthDataStructure> monthdatalist; // 12 months[income, outcome]
   String _filename;
-  int income_year, outcome_year;
+  int income_year, outcome_year; // Annual income & outcome
 
   MonthDataList(){
     this.monthdatalist = [];
@@ -41,7 +41,7 @@ class MonthDataList{
     monthdatalist.add(MonthDataStructure(b,c));
   }
 
-  init_monthDataList(int year){
+  create_monthDataList(int year){
     monthdatalist.clear();
     this.income_year = 0;
     this.outcome_year = 0;
@@ -53,10 +53,14 @@ class MonthDataList{
       month_readList(year.toString()+'-'+(i+1).toString().padLeft(2,'0'), i);
     }
   }
-
-  print_monthDataList(){
+  create_monthDataList_byTag(int year, String tag){
+    monthdatalist.clear();
     for(int i = 0 ; i<12; i++){
-      print('income:'+monthdatalist[i].income.toString()+'  outcome:'+monthdatalist[i].outcome.toString());
+      add_MonthDataList(0, 0);
+    }
+
+    for(int i=0; i<12; i++) {
+      month_readList_byTag(year.toString()+'-'+(i+1).toString().padLeft(2,'0'), i, tag);
     }
   }
 
@@ -83,6 +87,30 @@ class MonthDataList{
       else {
         monthdatalist[index].sub_value(int.parse(amount));
         outcome_year += int.parse(amount);
+      }
+    }
+  }
+
+  month_readList_byTag(String fn, int index, String tag){
+    _filename = fn;
+    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
+
+    if(!file.existsSync()){return;}
+    String fileContent = file.readAsStringSync();
+    if(fileContent.isEmpty) {return;}
+
+    for(int i=0; i<fileContent.split('\n').length-1;i++) {
+      String inputStream;
+      String amount, founded, clr;
+
+      inputStream = fileContent.split('\n')[i];
+      amount = inputStream.split('#')[1];
+      founded = inputStream.split('#')[2];
+      clr = inputStream.split('#')[4];
+
+      if(tag == founded) {
+        if (clr == 'green') monthdatalist[index].add_value(int.parse(amount));
+        else monthdatalist[index].sub_value(int.parse(amount));
       }
     }
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myledger/statistics_day_chart.dart';
 import 'package:myledger/statistics_month_chart.dart';
 
 class Statistics extends StatefulWidget {
@@ -54,15 +55,8 @@ class _StatisticsState extends State<Statistics> with TickerProviderStateMixin {
           child: TabBarView(
             controller: _StatisticsTabController,
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.blueAccent,
-                ),
-              ),
-              Container(
-                child: Month_chart(),
-              ),
+              Day_chart(),
+              Month_chart(),
             ],
           ),
         )

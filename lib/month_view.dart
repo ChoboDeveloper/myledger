@@ -17,12 +17,12 @@ class _MonthViewState extends State<Month_view> {
     super.initState();
     year = DateTime.now().year;
     ml = new MonthDataList();
-    ml.init_monthDataList(year);
+    ml.create_monthDataList(year);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +61,7 @@ class _MonthViewState extends State<Month_view> {
                 child: Icon(Icons.chevron_left),
                 onPressed: (){
                   print('left');
-                  ml.init_monthDataList(--year);
+                  ml.create_monthDataList(--year);
                   setState(() {});
                 },
               ),
@@ -70,7 +70,7 @@ class _MonthViewState extends State<Month_view> {
                 child: Icon(Icons.chevron_right),
                 onPressed: (){
                   print('right');
-                  ml.init_monthDataList(++year);
+                  ml.create_monthDataList(++year);
                   setState(() {});
                 },
               ),

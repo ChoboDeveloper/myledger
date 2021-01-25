@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:myledger/day_datalist.dart';
 import 'package:myledger/staticfunction.dart';
 import 'package:myledger/day_tagview.dart';
+import 'package:intl/intl.dart';
 
 class DialogView extends StatefulWidget {
   DialogView({this.arguments});
@@ -29,7 +30,7 @@ class _DialogViewState extends State<DialogView> {
     _datecontroller.text = staticfunction.getdateformat(widget.arguments.date);
     //existed option
     if(widget.arguments.clr != '') {
-      _amountcontroller.text = widget.arguments.amount;
+      _amountcontroller.text = staticfunction.getcurrencyformat(widget.arguments.amount);
       _subjectcontroller.text = widget.arguments.subject;
       _tagcontroller.text = widget.arguments.tag;
       flag_in = widget.arguments.clr == 'green' ? true : false;
@@ -48,7 +49,8 @@ class _DialogViewState extends State<DialogView> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
-          SizedBox(height: 30),
+          // White Space
+          SizedBox(height: 40),
           // togglebutton to choice input or output
           Container(
             child: ToggleButtons(
@@ -96,9 +98,10 @@ class _DialogViewState extends State<DialogView> {
                     OutlineButton(onPressed: () async{
                       Future<DateTime> selectedDate = showDatePicker(
                           context: context,
+                          locale: Locale('ko', 'KO'),
                           initialDate: DateTime.parse(_datecontroller.text),
                           firstDate: DateTime(2018),
-                          lastDate: DateTime(2030),
+                          lastDate: DateTime(2040),
                           builder: (BuildContext context, Widget child) {
                             return Theme( data: ThemeData.dark(), child: child,);
                           }
@@ -122,10 +125,7 @@ class _DialogViewState extends State<DialogView> {
                         context: context,
                         initialTime: TimeOfDay.fromDateTime(DateTime.parse(_datecontroller.text)),
                         builder: (BuildContext context, Widget child) {
-                          return Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: child,
-                          );
+                          return Theme( data: ThemeData.dark(), child: child,);
                         },
                       );
                       _getTime = await selectedTime;
@@ -206,7 +206,8 @@ class _DialogViewState extends State<DialogView> {
                   controller: _amountcontroller,
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
+                    FilteringTextInputFormatter.digitsOnly,
+                    NumericTextFormatter()
                   ],
                   decoration: InputDecoration(
                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black, width:2.0),),
@@ -232,7 +233,8 @@ class _DialogViewState extends State<DialogView> {
                       widget.arguments.date = DateTime.parse(_datecontroller.text);
                       widget.arguments.tag = _tagcontroller.text;
                       widget.arguments.subject = _subjectcontroller.text;
-                      widget.arguments.amount = _amountcontroller.text;
+                      // Convert Currency to Int
+                      widget.arguments.amount = _amountcontroller.text.replaceAll(',', '');
                       if(!flag_in && !flag_out)
                         print('please input flag');
                       else
@@ -264,5 +266,30 @@ class _DialogViewState extends State<DialogView> {
         ],
       ),
     );
+  }
+}
+
+// converting int to Currency
+class NumericTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
+      return newValue.copyWith(text: '');
+    } else if (newValue.text.compareTo(oldValue.text) != 0) {
+      final int selectionIndexFromTheRight =
+          newValue.text.length - newValue.selection.end;
+      final f = NumberFormat("#,###");
+      final number =
+      int.parse(newValue.text.replaceAll(f.symbols.GROUP_SEP, ''));
+      final newString = f.format(number);
+      return TextEditingValue(
+        text: newString,
+        selection: TextSelection.collapsed(
+            offset: newString.length - selectionIndexFromTheRight),
+      );
+    } else {
+      return newValue;
+    }
   }
 }
