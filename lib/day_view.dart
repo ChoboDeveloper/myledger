@@ -35,7 +35,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return Column(
+    return ListView(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -160,7 +160,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               ],
             ),
             Container(
-              height: screenHeight * 0.525,
+              height: screenHeight * 0.55,
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 controller: _DailyTabController,

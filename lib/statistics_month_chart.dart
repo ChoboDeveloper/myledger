@@ -31,9 +31,38 @@ class _MonthState extends State<Month_chart> {
 
   // Draw BarChart
   barChart() {
-    return charts.BarChart(
-      seriesList,
-      animate: true,
+    return ShaderMask(
+      child: charts.BarChart(
+        seriesList,
+        animate: true,
+        defaultRenderer: new charts.BarRendererConfig(
+            cornerStrategy: const charts.ConstCornerStrategy(30)),
+      ),
+      shaderCallback: (Rect bounds) {
+        if(!flag)
+          return LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [Colors.red[400], Colors.orange, Color(0xFFFFB540)],
+            stops: [
+              0.0,
+              0.5,
+              1.0,
+            ],
+          ).createShader(bounds);
+        else
+          return LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [Colors.indigo[300], Colors.blue[300], Colors.purple[300]],
+            stops: [
+              0.0,
+              0.5,
+              1.0,
+            ],
+          ).createShader(bounds);
+      },
+      blendMode: BlendMode.srcATop,
     );
   }
 
@@ -56,24 +85,28 @@ class _MonthState extends State<Month_chart> {
         domainFn: (Stat stats, _) => stats.month,
         measureFn: (Stat stats, _) => stats.amount,
         data: Month_Data,
-        fillColorFn: (Stat Stats, _) {
+        /*fillColorFn: (Stat Stats, _) {
           return flag ? charts.MaterialPalette.green.shadeDefault : charts.MaterialPalette.red.shadeDefault;
-        },
+        },*/
       )
     ];
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return ListView(
       padding: EdgeInsets.zero,
       children: [
         Container(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               // Button to last year
-              FlatButton(
+              Container(child:Row(children: [
+              Container(
+                width: 50,
+                child: FlatButton(
                 child: Icon(Icons.chevron_left),
                 onPressed: (){
                   print('left');
@@ -87,10 +120,12 @@ class _MonthState extends State<Month_chart> {
                   seriesList = _createData(year, flag);
                   setState(() {});
                 },
-              ),
+              ),),
               Text(year.toString()+'년', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold,)),
               // Button to next year
-              FlatButton(
+              Container(
+                width: 50,
+                child: FlatButton(
                 child: Icon(Icons.chevron_right),
                 onPressed: (){
                   print('right');
@@ -101,10 +136,10 @@ class _MonthState extends State<Month_chart> {
                   seriesList = _createData(year, flag);
                   setState(() {});
                 },
-              ),
+              ),),
+              ],)),
               // Create Tag Menu
               Container(
-                margin: EdgeInsets.only(left: 16.0),
                 child: DropdownButton(
                   value: dropdownValue,
                   icon: Icon(Icons.arrow_downward),
@@ -137,7 +172,8 @@ class _MonthState extends State<Month_chart> {
           ),
         ),
         Container(
-          height: 500,
+          height: screenHeight * 0.625,
+          padding: EdgeInsets.only(bottom: 10.0),
           child: barChart(),
         ),
         Container(

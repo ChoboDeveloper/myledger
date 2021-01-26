@@ -29,7 +29,7 @@ class _StatisticsState extends State<Statistics> with TickerProviderStateMixin {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Material(
+        Container(
           color: Colors.white10,
           child:TabBar(
             controller: _StatisticsTabController,
