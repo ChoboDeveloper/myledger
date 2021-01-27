@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:myledger/day_datalist.dart';
-import 'package:myledger/staticfunction.dart';
-import 'package:myledger/day_dialogview.dart';
+import 'package:myledger/models/data_structure.dart';
+import 'package:myledger/utils/format_function.dart';
+import 'package:myledger/views/dialog_views/dialog_view.dart';
 
 class Daily_view extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
     super.initState();
     _DailyTabController = new TabController(length: 3, vsync: this);
     _dl = new DataList();
-    _dl.readList(staticfunction.getfilename(DateTime.now()));
+    _dl.readList(formatfunction.getfilename(DateTime.now()));
     _dl.getTotal();
     _current_year = DateTime.now().year.toString();
     _current_month = DateTime.now().month.toString().padLeft(2, '0');
@@ -44,7 +44,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Text('수입', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(_dl.total_in)+'원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(formatfunction.getcurrencyformatInt(_dl.total_in)+'원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -52,7 +52,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Text('지출', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(_dl.total_out)+'원',style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(formatfunction.getcurrencyformatInt(_dl.total_out)+'원',style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -60,7 +60,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   Text('합계', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(_dl.total)+'원', style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(formatfunction.getcurrencyformatInt(_dl.total)+'원', style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -76,7 +76,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                 _savefile();
                 _getCurrentdate('left');
                 _dl = new DataList();
-                _dl.readList(staticfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
+                _dl.readList(formatfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
                 _dl.getTotal();
                 },
               ),
@@ -87,7 +87,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                 _savefile();
                 _getCurrentdate('right');
                 _dl = new DataList();
-                _dl.readList(staticfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
+                _dl.readList(formatfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
                 _dl.getTotal();
                 },
               ),
@@ -121,7 +121,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
                   _savefile();
                 }
                 // 다른 경우 다른 데이터 파일에 저장
-                else _dl.saveOtherList(staticfunction.getfilename(_getdata.date), _getdata);
+                else _dl.saveOtherList(formatfunction.getfilename(_getdata.date), _getdata);
               }
               refresh(_dl);
               _savefile();
@@ -194,7 +194,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
     _savefile();
     return new List<Widget>.generate(_dl.datalist.length, (int index){
       String sign = _dl.datalist[index].clr == 'green' ? '+ ' : '- ';
-      String money = staticfunction.getcurrencyformat(_dl.datalist[index].amount);
+      String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
       return InkWell(
         onTap: () async{
           DataStructure _getdata = _dl.datalist[index-1];
@@ -202,7 +202,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               CupertinoPageRoute(builder: (context) => DialogView(arguments: _getdata))
           );
           if(_getdata != null && _getdata.date.month.toString().padLeft(2,'0') != _current_month){
-            _dl.saveOtherList(staticfunction.getfilename(_getdata.date), _getdata);
+            _dl.saveOtherList(formatfunction.getfilename(_getdata.date), _getdata);
             _dl.datalist.removeAt(index-1);
           }
           refresh(_dl);
@@ -245,7 +245,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(staticfunction.getdateformat_withtime(_dl.datalist[index].date),
+                  Text(formatfunction.getdateformat_withtime(_dl.datalist[index].date),
                       style: TextStyle(fontSize: 13.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey)),
@@ -267,7 +267,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
   List<Widget> _create_ListView_In() {
     return new List<Widget>.generate(_dl.datalist.length, (int index) {
       String sign = '+ ';
-      String money = staticfunction.getcurrencyformat(_dl.datalist[index].amount);
+      String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
       if(_dl.datalist[index].clr == 'red') {
         index++;
         return Container();
@@ -285,7 +285,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(staticfunction.getdateformat_withtime(_dl.datalist[index].date),
+                Text(formatfunction.getdateformat_withtime(_dl.datalist[index].date),
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
@@ -307,7 +307,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
   List<Widget> _create_ListView_Out() {
     return new List<Widget>.generate(_dl.datalist.length, (int index) {
       String sign = '- ';
-      String money = staticfunction.getcurrencyformat(_dl.datalist[index].amount);
+      String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
       if(_dl.datalist[index].clr == 'green') {
         index++;
         return Container();
@@ -325,7 +325,7 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(staticfunction.getdateformat_withtime(_dl.datalist[index].date),
+                Text(formatfunction.getdateformat_withtime(_dl.datalist[index].date),
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),

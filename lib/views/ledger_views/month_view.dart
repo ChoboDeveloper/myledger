@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myledger/staticfunction.dart';
-import 'package:myledger/month_datalist.dart';
+import 'package:myledger/utils/format_function.dart';
+import 'package:myledger/models/month_data_structure.dart';
 
 class Month_view extends StatefulWidget {
   @override
@@ -22,6 +22,7 @@ class _MonthViewState extends State<Month_view> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return ListView(
       children: <Widget>[
         Row(
@@ -31,7 +32,7 @@ class _MonthViewState extends State<Month_view> {
               child: Column(
                 children: [
                   Text('수입', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(ml.get_income_year())+'원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(formatfunction.getcurrencyformatInt(ml.get_income_year())+'원', style: TextStyle(color: Colors.green[400],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -39,7 +40,7 @@ class _MonthViewState extends State<Month_view> {
               child: Column(
                 children: [
                   Text('지출', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt(ml.get_outcome_year())+'원', style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(formatfunction.getcurrencyformatInt(ml.get_outcome_year())+'원', style: TextStyle(color: Colors.red[300],fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -47,7 +48,7 @@ class _MonthViewState extends State<Month_view> {
               child: Column(
                 children: [
                   Text('합계', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  Text(staticfunction.getcurrencyformatInt((ml.get_income_year()-ml.get_outcome_year()))+'원', style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold, fontSize: 14))
+                  Text(formatfunction.getcurrencyformatInt((ml.get_income_year()-ml.get_outcome_year()))+'원', style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold, fontSize: 14))
                 ],
               ),
             ),
@@ -95,7 +96,7 @@ class _MonthViewState extends State<Month_view> {
                     children: [
                       Container(
                         alignment: Alignment.center,
-                        width: 60,
+                        width: screenWidth * 0.15,
                         child:  Text((i+1).toString()+'월', style: TextStyle(
                         fontSize: 17.0, fontWeight: FontWeight.bold)),
                         decoration: BoxDecoration(
@@ -105,14 +106,14 @@ class _MonthViewState extends State<Month_view> {
                       ),
                       Container(
                         alignment: Alignment.topRight,
-                        width: 150,
-                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_income())+'원', style: TextStyle(fontSize: 16.0,
+                        width: screenWidth * 0.3,
+                        child: Text(formatfunction.getcurrencyformat(ml.monthdatalist[i].get_income())+'원', style: TextStyle(fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.green[400])),),
                       Container(
                         alignment: Alignment.topRight,
-                        width: 150,
-                        child: Text(staticfunction.getcurrencyformat(ml.monthdatalist[i].get_outcome())+'원', style: TextStyle(fontSize: 16.0,
+                        width: screenWidth * 0.3,
+                        child: Text(formatfunction.getcurrencyformat(ml.monthdatalist[i].get_outcome())+'원', style: TextStyle(fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.red[300])),),
                     ],

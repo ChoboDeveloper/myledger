@@ -1,8 +1,9 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myledger/month_datalist.dart';
-import 'day_tagdatalist.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:myledger/models/month_data_structure.dart';
+import 'package:myledger/models/tag_structure.dart';
+
 
 class Month_chart extends StatefulWidget {
   @override

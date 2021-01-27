@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:myledger/staticfunction.dart';
+import 'package:myledger/utils/format_function.dart';
 
 class TagList{
   List<String> taglist;
@@ -36,7 +36,7 @@ class TagList{
   }
 
   readList(String fn){
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
 
     if(!file.existsSync()){
       initlist(fn);
@@ -53,7 +53,7 @@ class TagList{
   }
 
   saveList(String fn){
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/tags_$fn.txt');
     String inputStream = '';
     taglist.forEach((element) {
       inputStream += element + '\n';

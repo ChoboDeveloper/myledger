@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myledger/day_datalist.dart';
-import 'package:myledger/staticfunction.dart';
-import 'package:myledger/day_tagview.dart';
+import 'package:myledger/models/data_structure.dart';
+import 'package:myledger/utils/format_function.dart';
+import 'package:myledger/views/dialog_views/tag_view.dart';
 import 'package:intl/intl.dart';
 
 class DialogView extends StatefulWidget {
@@ -27,10 +27,10 @@ class _DialogViewState extends State<DialogView> {
   @override
   void initState() {
     super.initState();
-    _datecontroller.text = staticfunction.getdateformat(widget.arguments.date);
+    _datecontroller.text = formatfunction.getdateformat(widget.arguments.date);
     //existed option
     if(widget.arguments.clr != '') {
-      _amountcontroller.text = staticfunction.getcurrencyformat(widget.arguments.amount);
+      _amountcontroller.text = formatfunction.getcurrencyformat(widget.arguments.amount);
       _subjectcontroller.text = widget.arguments.subject;
       _tagcontroller.text = widget.arguments.tag;
       flag_in = widget.arguments.clr == 'green' ? true : false;
@@ -108,7 +108,7 @@ class _DialogViewState extends State<DialogView> {
                       );
                       _getMonth = await selectedDate;
                       if(_getMonth != null)
-                        _datecontroller.text = staticfunction.getdateformat(_getMonth).split(' ')[0] +
+                        _datecontroller.text = formatfunction.getdateformat(_getMonth).split(' ')[0] +
                             ' ' + _datecontroller.text.split(' ')[1];
                       setState(() {});
                     }, child: Text(
@@ -136,7 +136,7 @@ class _DialogViewState extends State<DialogView> {
                       }
                       },
                       child: Text(
-                        staticfunction.getTimeformat(DateTime.parse(_datecontroller.text)),
+                        formatfunction.getTimeformat(DateTime.parse(_datecontroller.text)),
                       style: TextStyle(color: Colors.black87),
                     ),
                       borderSide: BorderSide(style: BorderStyle.solid, width: 1.2),

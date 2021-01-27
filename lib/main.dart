@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:myledger/ledger.dart';
-import 'package:myledger/statistics.dart';
-import 'package:myledger/staticfunction.dart';
+import 'views/ledger_views/ledger_view.dart';
+import 'views/chart_views/chart_view.dart';
+import 'utils/format_function.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       statusBarColor: Colors.grey,
     ));
     return FutureBuilder<dynamic>(
-        future: staticfunction.getFilepath(),
+        future: formatfunction.getFilepath(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(

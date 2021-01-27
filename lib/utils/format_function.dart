@@ -2,14 +2,14 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-class staticfunction{
+class formatfunction{
   static final NumberFormat currencyformatter = NumberFormat("#,###");
   static DateFormat formatter;
   static Directory appDocumentsDirectory;
 
   static Future getFilepath() async{
     appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    new Directory('${staticfunction.appDocumentsDirectory.path}/DataSource').create();
+    new Directory('${formatfunction.appDocumentsDirectory.path}/DataSource').create();
     return appDocumentsDirectory;
   }
 

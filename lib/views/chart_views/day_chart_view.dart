@@ -1,8 +1,8 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'day_datalist.dart';
-import 'staticfunction.dart';
+import 'package:myledger/models/data_structure.dart';
+import 'package:myledger/utils/format_function.dart';
 
 class Day_chart extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _DayState extends State<Day_chart> {
     super.initState();
     dl = new DataList();
 
-    dl.readList(staticfunction.getfilename(DateTime.now()));
+    dl.readList(formatfunction.getfilename(DateTime.now()));
     _current_year = DateTime.now().year.toString();
     _current_month = DateTime.now().month.toString().padLeft(2, '0');
 
@@ -114,7 +114,7 @@ class _DayState extends State<Day_chart> {
                     onPressed: (){print('left');
                     _getCurrentdate('left');
                     dl.datalist.clear();
-                    dl.readList(staticfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
+                    dl.readList(formatfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
                     seriesList.clear();
                     seriesList = _createSampleData();
                     setState(() {});
@@ -131,7 +131,7 @@ class _DayState extends State<Day_chart> {
                     onPressed: (){print('right');
                     _getCurrentdate('right');
                     dl.datalist.clear();
-                    dl.readList(staticfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
+                    dl.readList(formatfunction.getfilename(DateTime.parse('$_current_year-$_current_month-01')));
                     seriesList.clear();
                     seriesList = _createSampleData();
                     setState(() {});
@@ -140,7 +140,7 @@ class _DayState extends State<Day_chart> {
                 ],)),
                 Container(
                   margin: EdgeInsets.only(right: 10.0),
-                  child: Text(staticfunction.getcurrencyformatInt(div)+'원',
+                  child: Text(formatfunction.getcurrencyformatInt(div)+'원',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                 ),
               ],
@@ -182,7 +182,7 @@ class _DayState extends State<Day_chart> {
                         children:[
                           Text(Daily_data[index].tag,
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
-                          Text(staticfunction.getcurrencyformatInt(Daily_data[index].amount)+'원',
+                          Text(formatfunction.getcurrencyformatInt(Daily_data[index].amount)+'원',
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),),
                         ],
                       ),

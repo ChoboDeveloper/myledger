@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:myledger/day_tagdatalist.dart';
+import 'package:myledger/models/tag_structure.dart';
 
 class TagView extends StatefulWidget {
   TagView({this.arguments, this.arguments_flag});

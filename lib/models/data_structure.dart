@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:myledger/staticfunction.dart';
+import 'package:myledger/utils/format_function.dart';
 
 class DataStructure{
   DateTime date;
@@ -38,12 +38,12 @@ class DataList{
 
   saveList(String fn){
     _filename = fn;
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
 
     String inputStream = '';
     datalist.forEach((element) {
       String _date,_amount,_tag,_subject,_flag;
-      _date = staticfunction.getdateformat(element.date) + '#';
+      _date = formatfunction.getdateformat(element.date) + '#';
       _amount = element.amount + '#';
       _tag = element.tag + '#';
       _subject = element.subject + '#';
@@ -55,11 +55,11 @@ class DataList{
 
   saveOtherList(String fn, DataStructure element){
     _filename = fn;
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
     String inputStream = '';
 
     String _date,_amount,_tag,_subject,_flag;
-    _date = staticfunction.getdateformat(element.date) + '#';
+    _date = formatfunction.getdateformat(element.date) + '#';
     _amount = element.amount + '#';
     _tag = element.tag + '#';
     _subject = element.subject + '#';
@@ -71,7 +71,7 @@ class DataList{
 
   readList(String fn){
     _filename = fn;
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
 
     if(!file.existsSync()) {
       print(_filename+'.txt is not exist\n');

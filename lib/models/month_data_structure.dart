@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:myledger/staticfunction.dart';
+import 'package:myledger/utils/format_function.dart';
 
 class MonthDataStructure{
   int income, outcome;
@@ -66,7 +66,7 @@ class MonthDataList{
 
   month_readList(String fn, int index){
     _filename = fn;
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
 
     if(!file.existsSync()) return;
     String fileContent = file.readAsStringSync();
@@ -93,7 +93,7 @@ class MonthDataList{
 
   month_readList_byTag(String fn, int index, String tag){
     _filename = fn;
-    File file = File('${staticfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
+    File file = File('${formatfunction.appDocumentsDirectory.path}/DataSource/$_filename.txt');
 
     if(!file.existsSync()){return;}
     String fileContent = file.readAsStringSync();
