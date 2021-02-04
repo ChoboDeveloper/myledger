@@ -192,127 +192,106 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
   List<Widget> _create_ListView_Total() {
     refresh(_dl);
     _savefile();
+    if(_dl.datalist.isEmpty) return new List<Widget>.empty();
+    int cur = _dl.datalist[0].date.day;
+    bool first_drawing = false;
     return new List<Widget>.generate(_dl.datalist.length, (int index){
-      String sign = _dl.datalist[index].clr == 'green' ? '+ ' : '- ';
-      String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
-      return InkWell(
-        onTap: () async{
-          DataStructure _getdata = _dl.datalist[index-1];
-          _getdata = await Navigator.push(context,
-              CupertinoPageRoute(builder: (context) => DialogView(arguments: _getdata))
-          );
-          if(_getdata != null && _getdata.date.month.toString().padLeft(2,'0') != _current_month){
-            _dl.saveOtherList(formatfunction.getfilename(_getdata.date), _getdata);
-            _dl.datalist.removeAt(index-1);
-          }
-          refresh(_dl);
-        },
-        onLongPress: (){
-          showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) => CupertinoActionSheet(
-              actions: <Widget>[
-                CupertinoActionSheetAction(
-                  child: const Text('삭제하기', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
-                  onPressed: () {
-                    _dl.datalist.removeAt(index-1);
-                    refresh(_dl);
-                    setState(() {});
-                    print((index-1).toString() + 'dismissed');
-                    Navigator.pop(context);
-                  },
-                ),
-                CupertinoActionSheetAction(
-                  child: const Text('취소하기', style: TextStyle(color: Colors.grey),),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ),
-          );
-        },
-        child: Container(
-            margin: EdgeInsets.all(5.0),
-            padding: EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              border: Border.all(width: 2, color: Colors.grey[300]),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(formatfunction.getdateformat_withtime(_dl.datalist[index].date),
-                      style: TextStyle(fontSize: 13.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey)),
-                  Text(_dl.datalist[index].subject == '' ? _dl.datalist[index].tag : _dl.datalist[index].subject, style: TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              Text('$sign$money원', style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: _dl.datalist[index++].clr == 'green' ? Colors.green[400] : Colors.red[400])),
-            ],
-          ),
-        ),
-      );
+      if(cur != _dl.datalist[index].date.day || !first_drawing) {
+        first_drawing = true;
+        cur = _dl.datalist[index].date.day;
+        return build_tile_with_Date(context, index, cur);
+      }
+      else
+        return build_tile(context, index);
     });
   }
 
   List<Widget> _create_ListView_In() {
+    if(_dl.datalist.isEmpty) return new List<Widget>.empty();
+    int cur = _dl.datalist[0].date.day;
+    bool first_drawing = false;
     return new List<Widget>.generate(_dl.datalist.length, (int index) {
-      String sign = '+ ';
-      String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
       if(_dl.datalist[index].clr == 'red') {
-        index++;
         return Container();
       }
-      return Container(
-        margin: EdgeInsets.all(5.0),
-        padding: EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          border: Border.all(width: 2, color: Colors.grey[300]),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(formatfunction.getdateformat_withtime(_dl.datalist[index].date),
-                    style: TextStyle(fontSize: 13.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey)),
-                Text(_dl.datalist[index].subject == '' ? _dl.datalist[index].tag : _dl.datalist[index].subject, style: TextStyle(
-                    fontSize: 20.0, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Text('$sign$money원', style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: _dl.datalist[index++].clr == 'green' ? Colors.green[400] : Colors.red[400])
-            ),
-          ],
-        ),
-      );
+      else if(cur != _dl.datalist[index].date.day || !first_drawing){
+        first_drawing = true;
+        cur = _dl.datalist[index].date.day;
+        return build_tile_with_Date(context, index, cur);
+      }
+      else{
+        return build_tile(context, index);
+      }
     });
   }
 
   List<Widget> _create_ListView_Out() {
+    if(_dl.datalist.isEmpty) return new List<Widget>.empty();
+    int cur = _dl.datalist[0].date.day;
+    bool first_drawing = false;
     return new List<Widget>.generate(_dl.datalist.length, (int index) {
-      String sign = '- ';
-      String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
       if(_dl.datalist[index].clr == 'green') {
-        index++;
         return Container();
       }
-      return Container(
+      else if(cur != _dl.datalist[index].date.day || !first_drawing){
+        first_drawing = true;
+        cur = _dl.datalist[index].date.day;
+        return build_tile_with_Date(context, index, cur);
+      }
+      else{
+        return build_tile(context, index);
+      }
+    });
+  }
+
+  Widget build_tile(BuildContext context, int index){
+    String sign = _dl.datalist[index].clr == 'green' ? '+ ' : '- ';
+    String money = formatfunction.getcurrencyformat(_dl.datalist[index].amount);
+    return InkWell(
+      onTap: () async {
+        DataStructure _getdata = _dl.datalist[index - 1];
+        _getdata = await Navigator.push(context,
+            CupertinoPageRoute(
+                builder: (context) => DialogView(arguments: _getdata))
+        );
+        if (_getdata != null &&
+            _getdata.date.month.toString().padLeft(2, '0') !=
+                _current_month) {
+          _dl.saveOtherList(
+              formatfunction.getfilename(_getdata.date), _getdata);
+          _dl.datalist.removeAt(index - 1);
+        }
+        refresh(_dl);
+      },
+      onLongPress: () {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) =>
+              CupertinoActionSheet(
+                actions: <Widget>[
+                  CupertinoActionSheetAction(
+                    child: const Text('삭제하기', style: TextStyle(color: Colors
+                        .red, fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      _dl.datalist.removeAt(index - 1);
+                      refresh(_dl);
+                      setState(() {});
+                      print((index - 1).toString() + 'dismissed');
+                      Navigator.pop(context);
+                    },
+                  ),
+                  CupertinoActionSheetAction(
+                    child: const Text('취소하기', style: TextStyle(color: Colors
+                        .grey),),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+        );
+      },
+      child: Container(
         margin: EdgeInsets.all(5.0),
         padding: EdgeInsets.all(12.0),
         decoration: BoxDecoration(
@@ -325,27 +304,55 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(formatfunction.getdateformat_withtime(_dl.datalist[index].date),
+                Text(formatfunction.getdateformat_withtime(
+                    _dl.datalist[index].date),
                     style: TextStyle(fontSize: 13.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey)),
-                Text(_dl.datalist[index].subject == '' ? _dl.datalist[index].tag : _dl.datalist[index].subject, style: TextStyle(
+                Text(_dl.datalist[index].subject == '' ? _dl.datalist[index]
+                    .tag : _dl.datalist[index].subject, style: TextStyle(
                     fontSize: 20.0, fontWeight: FontWeight.bold)),
               ],
             ),
             Text('$sign$money원', style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
-                color: _dl.datalist[index++].clr == 'green' ? Colors.green[400] : Colors.red[400])),
+                color: _dl.datalist[index++].clr == 'green' ? Colors
+                    .green[400] : Colors.red[400])),
           ],
         ),
-      );
-    });
+      ),
+    );
   }
 
-  void _savefile() {
-    _dl.saveList('$_current_year-$_current_month');
-    setState(() {});
+  Widget build_tile_with_Date(BuildContext context, int index, int cur){
+    cur = _dl.datalist[index].date.day;
+    String days_name = formatfunction.getdaysname(_dl.datalist[index].date);
+    Color days_color;
+    if(days_name == '일요일')
+      days_color = Colors.red[300];
+    else if(days_name == '토요일')
+      days_color = Colors.blue[300];
+    else
+      days_color = Colors.black;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(7.0),
+          child: Text(
+            _dl.datalist[index].date.month.toString() + '월 ' + cur.toString() + '일 '
+              + days_name,
+            style: TextStyle(fontWeight: FontWeight.bold, color: days_color),
+          ),
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
+        build_tile(context, index),
+      ],
+    );
   }
 
   void _getCurrentdate(String direction){
@@ -370,6 +377,11 @@ class _DailyState extends State<Daily_view> with TickerProviderStateMixin {
   void refresh(DataList dl){
     dl.datalist.sort((a,b) => b.date.compareTo(a.date));
     dl.getTotal();
+  }
+
+  void _savefile() {
+    _dl.saveList('$_current_year-$_current_month');
+    setState(() {});
   }
 }
 

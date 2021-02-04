@@ -51,4 +51,9 @@ class formatfunction{
     formatted = DateFormat('yyyy-MM-dd $tmp hh:mm:ss').format(date);
     return formatted;
   }
+
+  static String getdaysname(DateTime date){
+    String formatted = DateFormat('EEEE', 'ko').format(date);
+    return formatted;
+  }
 }
