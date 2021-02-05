@@ -1,10 +1,8 @@
-```
-/visual-studio-app-center/releases/osver/:owner/:app/:token
+```null
+https://img.shields.io/github/last-commit/ChoboDeveloper/myledger
 ```
 
-```
-/ore/v/:pluginId
-```
+
 
 # myledger
 
