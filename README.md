@@ -1,8 +1,6 @@
-```null
-https://img.shields.io/github/last-commit/ChoboDeveloper/myledger
-```
 
 
+![last Commit Badge](https://img.shields.io/github/last-commit/ChoboDeveloper/myledger)![Commit Frequency Badge](https://img.shields.io/github/commit-activity/w/ChoboDeveloper/myledger)
 
 # myledger
 
