@@ -4,7 +4,7 @@
 
 # myledger
 
-### Flutter를 활용한 사이드 프로젝트
+### Flutter를 활용한 가계부
 
 <br>
 
