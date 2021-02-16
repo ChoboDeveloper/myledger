@@ -6,3 +6,10 @@
 
 ### Flutter를 활용한 사이드 프로젝트
 
+<br>
+
+---
+### display
+
+![image01](https://user-images.githubusercontent.com/75229881/108018597-8e7fb100-705b-11eb-9a1a-c79221216bfb.png)
+![image02](https://user-images.githubusercontent.com/75229881/108018602-8fb0de00-705b-11eb-83eb-09ae3fb651df.png)
